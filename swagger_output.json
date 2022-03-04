@@ -1,0 +1,1694 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Top Quiz Show - REST API",
+    "description": "API for the game and dashboard of the game Top Quiz Show (by Rede TV Plus)"
+  },
+  "host": "http://www.redetvplus-api.kinghost.net/backend/dev",
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api-key",
+      "in": "header"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/user/game/{guid}": {
+      "get": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Gets an existing player",
+        "description": "Gets an existing player",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "playerData",
+            "in": "params",
+            "description": "Data of the player to be found",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object of the player (the existing one or the created one)"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/game": {
+      "post": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Gets an existing player or create one if not found",
+        "description": "Tries to find an existing player and if he/she doesn",
+        "parameters": [
+          {
+            "name": "playerData",
+            "in": "body",
+            "description": "Data of the player to be created",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "guid": {
+                  "type": "string",
+                  "example": "af89fa89v89bclk1zxc"
+                },
+                "isPlaying": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": [
+                "guid",
+                "isPlaying"
+              ]
+            }
+          },
+          {
+            "name": "guid",
+            "in": "params",
+            "description": "GUID of the player who played the battery",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "batteryId",
+            "in": "params",
+            "description": "ID of the battery played by the player",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Battery of questions"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/game/new": {
+      "post": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Creates a player",
+        "description": "Creates a player in database",
+        "parameters": [
+          {
+            "name": "playerData",
+            "in": "body",
+            "description": "Data of the player to be created",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "guid": {
+                  "type": "string",
+                  "example": "j1k2ci14ox9zr09w8a6z3"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "João Asfora"
+                },
+                "isPremium": {
+                  "type": "boolean",
+                  "example": true
+                }
+              },
+              "required": [
+                "guid",
+                "name",
+                "isPremium"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object of the new player"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/game/update": {
+      "post": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Update a player",
+        "description": "Updates a player in database",
+        "parameters": [
+          {
+            "name": "playerData",
+            "in": "body",
+            "description": "Data of the player to be updated",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object of the player updated"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/game/isplaying": {
+      "post": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Sets whether the player is playing now",
+        "description": "Sets whether the player is playing now",
+        "parameters": [
+          {
+            "name": "playerData",
+            "in": "body",
+            "description": "Data of the player to be created",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "guid": {
+                  "type": "string",
+                  "example": "af89fa89v89bclk1zxc"
+                },
+                "isPlaying": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": [
+                "guid",
+                "isPlaying"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated player"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user\r/dashboard-signin": {
+      "post": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Signs user in a dashboard user at the dashboard",
+        "description": "Signs user in a dashboard user at the dashboard",
+        "parameters": [
+          {
+            "name": "playerData",
+            "in": "body",
+            "description": "Data of the player to be created",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "joao@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "j1k2c@#r09w8a6z3"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object of the dashboard user"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user\r/dashboard-signup": {
+      "post": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Registers a dashboard user",
+        "description": "Registers a dashboard user",
+        "parameters": [
+          {
+            "name": "playerData",
+            "in": "body",
+            "description": "Data of the player to be created",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "joao@email.com"
+                },
+                "firstName": {
+                  "type": "string",
+                  "example": "João"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Asfora"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "j1k2c@#r09w8a6z3"
+                }
+              },
+              "required": [
+                "email",
+                "firstName",
+                "lastName",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object of the new dashboard user"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/user\r/game/{guid}/battery/{batteryId}": {
+      "get": {
+        "tags": [
+          "User/Player"
+        ],
+        "summary": "Gets a battery played by the player by battery ID",
+        "description": "Gets a battery played by the player by battery ID",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "params",
+            "required": true,
+            "type": "string",
+            "description": "GUID of the player who played the battery"
+          },
+          {
+            "name": "batteryId",
+            "in": "params",
+            "required": true,
+            "type": "string",
+            "description": "ID of the battery played by the player"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Battery of questions"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the complete object with analytics",
+        "description": "Get the complete object with analytics",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Object with analytics data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "89svdn0892g48czv987"
+                },
+                "themesPlayedCount": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "theme": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "count": {
+                        "type": "number",
+                        "example": 1435
+                      }
+                    }
+                  }
+                },
+                "hoursPlayedCount": {
+                  "type": "number",
+                  "example": 9.48123
+                },
+                "questionsPlayedCount": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "questionId": {
+                        "type": "string",
+                        "example": "a78fa98fa"
+                      },
+                      "count": {
+                        "type": "number",
+                        "example": 1238
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/themes/{theme}": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the count of an specific theme played",
+        "description": "Get the count of an specific theme played",
+        "parameters": [
+          {
+            "name": "theme",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Theme (enum int) to be queried",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "theme": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "required": [
+                "theme"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Final count of the theme played",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 103
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Increment the count of an specific theme played",
+        "description": "Increment the count of an specific theme played",
+        "parameters": [
+          {
+            "name": "theme",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Theme (enum int) to be incremented",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "theme": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "required": [
+                "theme"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Final sum of the theme played",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 103
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/hours": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get total hours played by all players",
+        "description": "Get total hours played by all players",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Final sum of the hours played saved in database",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 3.5
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/hours/inc": {
+      "post": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Increment total hours played by all players",
+        "description": "Increment total hours played by all players",
+        "parameters": [
+          {
+            "name": "hours",
+            "in": "body",
+            "description": "Hours to increment database count",
+            "required": true,
+            "type": "float",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hours": {
+                  "type": "number",
+                  "example": 0.5
+                }
+              },
+              "required": [
+                "hours"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Final sum of the hours played saved in database",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hoursPlayedCount": {
+                  "type": "number",
+                  "example": 3.5
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/days-played/inc": {
+      "post": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Increment how many times the game was played today",
+        "description": "Increment how many times the game was played today",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Days played list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "example": "2021-11-07T21:10:10.000+00:00"
+                  },
+                  "count": {
+                    "type": "number",
+                    "example": 41
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/questions/{questionId}": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the count of the questions played",
+        "description": "Get the count of the questions played",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Question ID (enum int) to be queried",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "string",
+                  "example": "asd8asd8a8f8fg9"
+                }
+              },
+              "required": [
+                "questionId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Final sum of the question played",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 103
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the top10 most played questions",
+        "description": "Get the top10 most played questions",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Question ID (enum int) to be queried",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "string",
+                  "example": "asd8asd8a8f8fg9"
+                }
+              },
+              "required": [
+                "questionId"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Final sum of the question played",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 103
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/questions/top10": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the top10 most played questions",
+        "description": "Get the top10 most played questions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Final sum of the theme played",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "theme": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "count": {
+                        "type": "number",
+                        "example": 13
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/questions-played/count": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the count of questions registered in database",
+        "description": "Get the count of questions registered in database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Count of questions in database",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 11
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics\r/players/count": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get the count of players",
+        "description": "Get the count of players",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Counts of players who have already played",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "count": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking/save": {
+      "post": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Saves a score",
+        "description": "If it finds a score saved for the same userGuid, year, month and dayOfYear, increments it, otherwise create a new ranking with the current year, month and dayOfMonth",
+        "parameters": [
+          {
+            "name": "scoreData",
+            "in": "body",
+            "description": "Object of the player ranking",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "q78f78a7q9qf"
+                },
+                "userGuid": {
+                  "type": "string",
+                  "example": "xcvb90xc89xc7689xc"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "João Asfora"
+                },
+                "score": {
+                  "type": "number",
+                  "example": 21312123
+                },
+                "year": {
+                  "type": "number",
+                  "example": 2021
+                },
+                "month": {
+                  "type": "number",
+                  "example": 1
+                },
+                "dayOfMonth": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "required": [
+                "userGuid",
+                "name",
+                "score",
+                "year",
+                "month",
+                "dayOfMonth"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated or created ranking object"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/complete/month/{month}": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get complete ranking by month of the current year",
+        "description": "Get complete ranking by month of the current year",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Month to be queried"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array with the complete ranking aggregated by the month"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/complete/date/{date}": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get complete ranking by an specific date",
+        "description": "Get complete ranking by an specific date",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date to be queried",
+            "schema": {
+              "type": "string",
+              "example": "2021-12-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array with the complete ranking aggregated by the passed date"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/complete/period/from/{from}/to/{to}": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get complete ranking by period",
+        "description": "Get complete ranking by period /from/to",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date from which the query is about",
+            "schema": {
+              "type": "string",
+              "example": "2021-11-24"
+            }
+          },
+          {
+            "name": "to",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date to which the query is about",
+            "schema": {
+              "type": "string",
+              "example": "2021-12-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array with the complete ranking aggregated by the passed period"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking/complete/today": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get complete ranking of today",
+        "description": "Get complete ranking of today",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Array with the complete ranking aggregated by todays date"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/player/{guid}/month/{month}": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get player ranking by an specific Month",
+        "description": "Get player ranking by an specific Month",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User GUID",
+            "schema": {
+              "type": "string",
+              "example": "as97a6d78zdsa"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Month",
+            "in": "path",
+            "description": "Month to be queried",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "2021-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player ranking aggregated by the passed Month"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/player/{guid}/date/{date}": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get player ranking by an specific date",
+        "description": "Get player ranking by an specific date",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User GUID",
+            "schema": {
+              "type": "string",
+              "example": "as97a6d78zdsa"
+            }
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date to be queried",
+            "schema": {
+              "type": "string",
+              "example": "2021-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player ranking aggregated by the passed date"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/player/{guid}/period/from/{from}/to/{to}": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get player ranking by period",
+        "description": "Get player ranking by period",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date to which the query is about",
+            "schema": {
+              "type": "string",
+              "example": "as97a6d78zdsa"
+            }
+          },
+          {
+            "name": "from",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Date from which the query is about",
+            "schema": {
+              "type": "string",
+              "example": "2021-12-05"
+            }
+          },
+          {
+            "name": "to",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date to which the query is about",
+            "schema": {
+              "type": "string",
+              "example": "2021-01-31"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player ranking aggregated by the passed period"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/ranking\r/player/{guid}/today": {
+      "get": {
+        "tags": [
+          "Ranking"
+        ],
+        "summary": "Get player ranking of today",
+        "description": "Get player ranking of today",
+        "parameters": [
+          {
+            "name": "guid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Date to which the query is about",
+            "schema": {
+              "type": "string",
+              "example": "as97a6d78zdsa"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Player ranking aggregated by todays date"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/question/": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Get queried questions from database",
+        "description": "Get queried questions from database",
+        "parameters": [
+          {
+            "name": "quantity",
+            "in": "query",
+            "description": "Quantity of questions to limit the query",
+            "required": false,
+            "type": "integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "quantity": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "required": [
+                "quantity"
+              ]
+            }
+          },
+          {
+            "name": "difficulty",
+            "in": "query",
+            "description": "Difficulty (enum int) of questions to query",
+            "required": false,
+            "type": "integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "difficulty": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "required": [
+                "difficulty"
+              ]
+            }
+          },
+          {
+            "name": "theme",
+            "in": "query",
+            "description": "Theme (enum int) of questions to query",
+            "required": false,
+            "type": "integer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "theme": {
+                  "type": "number",
+                  "example": 2
+                }
+              },
+              "required": [
+                "theme"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of questions"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Update a question",
+        "description": "Update a question",
+        "parameters": [
+          {
+            "name": "question",
+            "in": "body",
+            "description": "Question to update",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "What is the name of Jesus mortal father"
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "example": "John"
+                      },
+                      "isCorrect": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "isCorrect"
+                    ]
+                  }
+                },
+                "theme": {
+                  "type": "number",
+                  "example": 1
+                },
+                "difficulty": {
+                  "type": "number",
+                  "example": 3
+                }
+              },
+              "required": [
+                "title",
+                "answers",
+                "theme",
+                "difficulty"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated question"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/question/{id}": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Get a question by its ID from database",
+        "description": "Get a question by its ID from database",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "params",
+            "required": true,
+            "type": "string",
+            "description": "ID of the searched question",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "njv9801i19819u1v"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/question/new": {
+      "post": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Create a question",
+        "description": "Create a question",
+        "parameters": [
+          {
+            "name": "question",
+            "in": "body",
+            "description": "Question to create",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "What is the name of Jesus mortal father"
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "example": "John"
+                      },
+                      "isCorrect": {
+                        "type": "boolean",
+                        "example": false
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "isCorrect"
+                    ]
+                  }
+                },
+                "theme": {
+                  "type": "number",
+                  "example": 0
+                },
+                "difficulty": {
+                  "type": "number",
+                  "example": 2
+                }
+              },
+              "required": [
+                "title",
+                "answers",
+                "theme",
+                "difficulty"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question created"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/question\r/excel": {
+      "post": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Create multiple questions usgin a .xlsx file",
+        "description": "Create multiple questions usgin a .xlsx file",
+        "parameters": [
+          {
+            "name": "excelFile",
+            "in": "formData",
+            "description": "Template excel file (.xlsx) filled with all the questions to be created",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Array of questions created and not created from the Excel",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "questionsCreated": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                },
+                "questionsNotCreated": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/question\r/{id}": {
+      "delete": {
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Delete a question",
+        "description": "Delete a question",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "question",
+            "in": "path",
+            "description": "ID of the question to be deleted",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "string",
+              "example": "123rdxc978a9"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted question (as it was before deletion)"
+          },
+          "400": {
+            "description": "Message of error"
+          },
+          "500": {
+            "description": "Message of error"
+          }
+        }
+      }
+    },
+    "/api/v1/settings/special-theme": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Get the active special theme",
+        "description": "Get the active special theme",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/v1/settings/special-theme/set": {
+      "post": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Set the active special theme",
+        "description": "Set the active special theme",
+        "parameters": [
+          {
+            "name": "specialThemeName",
+            "in": "body",
+            "description": "Object with the name of the new special theme",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Oprah TV Show"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/api/v1/settings/special-theme/end": {
+      "put": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Ends the active special theme",
+        "description": "Ends the active special theme",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/api/v1/settings\r/under-maintanence": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "summary": "Get the current value of UnderMaintanence flag",
+        "description": "Get the current value of UnderMaintanence flag",
+        "parameters": [],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {}
+}
