@@ -1,9 +1,11 @@
 export enum AppErrorsMessages {
   EMAIL_ALREADY_EXISTS = "Email already registered.",
   INVALID_CREDENTIALS = "Invalid credentials.",
+  INVALID_REFRESH_TOKEN = "Invalid refresh token.",
   NOT_AUTHORIZED = "Not authorized.",
   NO_TOKEN_PROVIDED = "No token provided.",
   FAIL_AUTH_TOKEN = "Invalid token.",
+  FAIL_GET_TOKEN = "Failed to get token.",
   ERROR_SIGNUP = "Error signing up.",
   ERROR_SAVE_USER = "Error saving user.",
   ERROR_UPDATE_USER = "Error updating user.",
@@ -19,4 +21,10 @@ export enum AppErrorsMessages {
   INVALID_REQUEST = "Invalid request.",
   PASSWORDS_NOT_MATCH = "Passwords don't match.",
   PASSWORDS_REQUIRED = "Passwords required.",
+  SIGNOUT = "Failed to sign out.",
+}
+
+export enum AppSuccessMessages {
+  SIGNOUT = "User successfully signed out.",
+  KEYCLOAK_REGISTER = "User successfully registered.",
 }

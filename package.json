@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "ts-node src/server.ts",
-    "start_dev": "npm run swagger-autogen && env-cmd -f ./.env.development nodemon -x ts-node src/server.ts",
+    "start_dev": "npm run swagger-autogen && env-cmd -f ./.env nodemon -x ts-node src/server.ts",
     "push_heroku": "git push heroku main",
     "heroku_logs": "heroku logs --tail --app redetv-plus-api",
     "swagger-autogen": "node ./src/swagger/index.cjs"

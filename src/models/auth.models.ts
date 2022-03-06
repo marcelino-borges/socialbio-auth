@@ -3,7 +3,29 @@ import { Schema, model } from "mongoose";
 export interface IUserCredentials {
   email: string;
   password: string;
-  roles?: string[];
+}
+
+export interface IKeycloakUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  enabled: boolean;
+  username: string;
+  credentials: IKeycloakCredential[];
+  realmRoles?: string[];
+  clientRoles?: Map<string, string>;
+}
+
+export interface IKeycloakCredential {
+  type: string;
+  secretData: string;
+  value: string;
+  credentialData: string;
+}
+
+export enum KeycloakRoles {
+  USER = "user",
+  ADMIN = "admin",
 }
 
 export interface IAuthTokens {

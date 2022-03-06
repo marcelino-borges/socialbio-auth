@@ -1,7 +1,6 @@
 import helmet from "helmet";
 import cors from "cors";
 import express from "express";
-import connectMongo from "./mongo/config";
 import routes from "./routes";
 import dotenvSafe from "dotenv-safe";
 import swaggerFile from "../swagger_output.json";
@@ -16,7 +15,6 @@ const PORT = parseInt(process.env.PORT as string, 10);
 console.log("PORT on env: ", PORT);
 
 const app = express();
-connectMongo();
 
 app.use(cors());
 
