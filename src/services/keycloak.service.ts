@@ -173,6 +173,7 @@ export const getUserId = async (email: string) => {
 
 export const deleteKeycloakUser = async (email: string) => {
   try {
+    log(`[deleteKeycloakUser] deleting user ${email}`);
     const masterToken: AxiosResponse | null = await getMasterAdminToken();
 
     if (!masterToken || !masterToken.data || masterToken.status !== 200) {

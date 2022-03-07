@@ -138,23 +138,7 @@ export const signUp = async (req: Request, res: Response) => {
       .json(new AppResult(AppErrorsMessages.PASSWORDS_NOT_MATCH));
   }
 
-  const masterTokenResponse: AxiosResponse | null = await getMasterAdminToken();
-
-  if (
-    !masterTokenResponse ||
-    !masterTokenResponse.data ||
-    masterTokenResponse.status !== 200
-  ) {
-    return new AppResult(
-      AppErrorsMessages.ERROR_SIGNUP,
-      masterTokenResponse?.data.errorMessage,
-      masterTokenResponse?.status || 500
-    );
-  }
-
-  const masterToken = masterTokenResponse.data["access_token"];
-
-  const userExist = await doesUserExist(email, masterToken);
+  const userExist = await doesUserExist(email);
 
   if (userExist) {
     return res
@@ -178,9 +162,7 @@ export const signUp = async (req: Request, res: Response) => {
     ],
   };
 
-  const result = await userService.signUp(keycloakUser);
-
-  log("[AuthController:signUp]: ", JSON.stringify(result));
+  const result: AppResult = await userService.signUp(keycloakUser);
 
   if (!result.isError()) {
     const newUser: IUser = {
@@ -189,7 +171,22 @@ export const signUp = async (req: Request, res: Response) => {
       email,
     };
 
-    const isUserCreated = await createUser(newUser, masterToken);
+    const tokenResponse: AxiosResponse | null = await userService.getToken(
+      email,
+      password
+    );
+
+    if (!tokenResponse?.data) {
+      await deleteKeycloakUser(email);
+      return res
+        .status(500)
+        .json(new AppResult(AppErrorsMessages.INTERNAL_ERROR, null, 500));
+    }
+
+    const isUserCreated: boolean = await createUser(
+      newUser,
+      tokenResponse.data.access_token
+    );
 
     if (!isUserCreated) {
       log(
@@ -197,8 +194,11 @@ export const signUp = async (req: Request, res: Response) => {
       );
       await deleteKeycloakUser(email);
 
-      result.message = AppErrorsMessages.FAIL_AUTH_AND_REGISTER;
-      result.statusCode = 500;
+      return res
+        .status(500)
+        .json(
+          new AppResult(AppErrorsMessages.FAIL_AUTH_AND_REGISTER, null, 500)
+        );
     }
   }
   return res.status(result.statusCode).json(result);
