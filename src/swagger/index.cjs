@@ -19,10 +19,21 @@ const doc = {
       refreshToken: "a1zasf23asd-hjyqw1567asd",
       expiresIn: 3600,
     },
+    Credentials: {
+      email: "example@email.com",
+      password: "12345678",
+    },
     AppResult: {
       message: "Message result of the request",
       errorDetails: "In case of error, here goes the details",
       statusCode: 400,
+    },
+    NewUser: {
+      email: "example@email.com",
+      password: "12345678",
+      confirmPassword: "12345678",
+      firstName: "John",
+      lastName: "Doe",
     },
   },
 };

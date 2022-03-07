@@ -27,18 +27,13 @@
         "description": "Signs the user in by credentials",
         "parameters": [
           {
-            "name": "email",
+            "name": "credentials",
             "in": "body",
             "description": "User email",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "password",
-            "in": "body",
-            "description": "User password",
-            "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/Credentials"
+            }
           }
         ],
         "responses": {
@@ -49,9 +44,15 @@
             }
           },
           "400": {
-            "description": "Message of error"
+            "description": "Message of error",
+            "schema": {
+              "$ref": "#/definitions/AppResult"
+            }
           },
           "500": {
+            "schema": {
+              "$ref": "#/definitions/AppResult"
+            },
             "description": "Message of error"
           }
         }
@@ -68,24 +69,25 @@
           {
             "name": "refreshToken",
             "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "refreshToken": {
-                  "example": "any"
-                }
-              }
-            },
             "description": "User email",
             "required": true,
-            "type": "object"
+            "type": "string"
           }
         ],
         "responses": {
+          "204": {
+            "description": "Successfully signed out"
+          },
           "400": {
+            "schema": {
+              "$ref": "#/definitions/AppResult"
+            },
             "description": "Message of error"
           },
           "500": {
+            "schema": {
+              "$ref": "#/definitions/AppResult"
+            },
             "description": "Message of error"
           }
         }
@@ -100,39 +102,13 @@
         "description": "Creates user access in database",
         "parameters": [
           {
-            "name": "email",
+            "name": "NewUser",
             "in": "body",
-            "description": "User email",
+            "description": "New user data",
             "required": true,
-            "type": "string"
-          },
-          {
-            "name": "password",
-            "in": "body",
-            "description": "User password",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "confirmPassword",
-            "in": "body",
-            "description": "User password",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "firstName",
-            "in": "body",
-            "description": "User first name",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "lastName",
-            "in": "body",
-            "description": "User last name",
-            "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/NewUser"
+            }
           }
         ],
         "responses": {
@@ -143,9 +119,15 @@
             "description": "Result of the request"
           },
           "400": {
+            "schema": {
+              "$ref": "#/definitions/AppResult"
+            },
             "description": "Message of error"
           },
           "500": {
+            "schema": {
+              "$ref": "#/definitions/AppResult"
+            },
             "description": "Message of error"
           }
         }
@@ -170,6 +152,19 @@
         }
       }
     },
+    "Credentials": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
+        }
+      }
+    },
     "AppResult": {
       "type": "object",
       "properties": {
@@ -184,6 +179,31 @@
         "statusCode": {
           "type": "number",
           "example": 400
+        }
+      }
+    },
+    "NewUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@email.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "12345678"
+        },
+        "confirmPassword": {
+          "type": "string",
+          "example": "12345678"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "John"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Doe"
         }
       }
     }

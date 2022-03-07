@@ -1,40 +1,35 @@
 import { Request, Response } from "express";
 import * as userService from "../services/keycloak.service";
-import {
-  IAuthTokens,
-  IKeycloakUser,
-  IUserCredentials,
-} from "./../models/auth.models";
+import { IAuthTokens, IKeycloakUser, IUser } from "./../models/auth.models";
 import AppResult from "../errors/app-result";
-import { AppErrorsMessages, AppSuccessMessages } from "../constants";
-import bcrypt from "bcryptjs";
+import { AppErrorsMessages } from "../constants";
+import { createUser, doesUserExist } from "../services/register.service";
 import { log } from "../utils/utils";
+import { deleteKeycloakUser } from "../services/keycloak.service";
+import { getMasterAdminToken } from "./../services/keycloak.service";
+import { AxiosResponse } from "axios";
 
 export const signIn = async (req: Request, res: Response) => {
   /* 
     #swagger.tags = ['Auth']
     #swagger.summary = 'Signs the user in by credentials'
     #swagger.description  = 'Signs the user in by credentials'
-    #swagger.parameters['email'] = {
+    #swagger.parameters['credentials'] = {
       in: 'body',
       description: 'User email',
       required: true,
-      type: 'string'
+      schema: { $ref: "#/definitions/Credentials" },
     }
-    #swagger.parameters['password'] = {
-      in: 'body',
-      description: 'User password',
-      required: true,
-      type: 'string'
-    } 
     #swagger.responses[200] = {
       schema: { $ref: "#/definitions/Token" },
       description: 'User tokens'
     }
     #swagger.responses[400] = {
+      schema: { $ref: "#/definitions/AppResult" },
       description: 'Message of error'
     }
     #swagger.responses[500] = {
+      schema: { $ref: "#/definitions/AppResult" },
       description: 'Message of error'
     }
   */
@@ -67,12 +62,17 @@ export const signOut = async (req: Request, res: Response) => {
       in: 'body',
       description: 'User email',
       required: true,
-      type: 'object'
+      type: 'string'
+    }
+    #swagger.responses[204] = {
+      description: 'Successfully signed out'
     }
     #swagger.responses[400] = {
+      schema: { $ref: "#/definitions/AppResult" },
       description: 'Message of error'
     }
     #swagger.responses[500] = {
+      schema: { $ref: "#/definitions/AppResult" },
       description: 'Message of error'
     }
   */
@@ -93,44 +93,22 @@ export const signUp = async (req: Request, res: Response) => {
     #swagger.tags = ['Auth']
     #swagger.summary = 'Signs the user up'
     #swagger.description  = 'Creates user access in database'
-    #swagger.parameters['email'] = {
+    #swagger.parameters['NewUser'] = {
       in: 'body',
-      description: 'User email',
+      description: 'New user data',
       required: true,
-      type: 'string'
-    }
-    #swagger.parameters['password'] = {
-      in: 'body',
-      description: 'User password',
-      required: true,
-      type: 'string'
-    }
-    #swagger.parameters['confirmPassword'] = {
-      in: 'body',
-      description: 'User password',
-      required: true,
-      type: 'string'
-    }
-    #swagger.parameters['firstName'] = {
-      in: 'body',
-      description: 'User first name',
-      required: true,
-      type: 'string'
-    }
-    #swagger.parameters['lastName'] = {
-      in: 'body',
-      description: 'User last name',
-      required: true,
-      type: 'string'
+      schema: { $ref: "#/definitions/NewUser" },
     }
     #swagger.responses[200] = {
       schema: { $ref: "#/definitions/AppResult" },
       description: 'Result of the request'
     }
     #swagger.responses[400] = {
+      schema: { $ref: "#/definitions/AppResult" },
       description: 'Message of error'
     }
     #swagger.responses[500] = {
+      schema: { $ref: "#/definitions/AppResult" },
       description: 'Message of error'
     }
   */
@@ -160,6 +138,30 @@ export const signUp = async (req: Request, res: Response) => {
       .json(new AppResult(AppErrorsMessages.PASSWORDS_NOT_MATCH));
   }
 
+  const masterTokenResponse: AxiosResponse | null = await getMasterAdminToken();
+
+  if (
+    !masterTokenResponse ||
+    !masterTokenResponse.data ||
+    masterTokenResponse.status !== 200
+  ) {
+    return new AppResult(
+      AppErrorsMessages.ERROR_SIGNUP,
+      masterTokenResponse?.data.errorMessage,
+      masterTokenResponse?.status || 500
+    );
+  }
+
+  const masterToken = masterTokenResponse.data["access_token"];
+
+  const userExist = await doesUserExist(email, masterToken);
+
+  if (userExist) {
+    return res
+      .status(400)
+      .json(new AppResult(AppErrorsMessages.USER_ALREADY_EXISTS));
+  }
+
   const keycloakUser: IKeycloakUser = {
     firstName,
     lastName,
@@ -178,5 +180,26 @@ export const signUp = async (req: Request, res: Response) => {
 
   const result = await userService.signUp(keycloakUser);
 
+  log("[AuthController:signUp]: ", JSON.stringify(result));
+
+  if (!result.isError()) {
+    const newUser: IUser = {
+      firstName,
+      lastName,
+      email,
+    };
+
+    const isUserCreated = await createUser(newUser, masterToken);
+
+    if (!isUserCreated) {
+      log(
+        "[AuthController:signUp]: " + AppErrorsMessages.FAIL_AUTH_AND_REGISTER
+      );
+      await deleteKeycloakUser(email);
+
+      result.message = AppErrorsMessages.FAIL_AUTH_AND_REGISTER;
+      result.statusCode = 500;
+    }
+  }
   return res.status(result.statusCode).json(result);
 };

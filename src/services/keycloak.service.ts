@@ -60,7 +60,7 @@ export const signOut = async (refreshToken: string) => {
   }
 };
 
-const getMasterAdminToken = async () => {
+export const getMasterAdminToken = async () => {
   const keycloakApi = axios.create({
     baseURL: `${keycloakConfig.masterAdmin.authServerUrl}/realms/${keycloakConfig.masterAdmin.realm}/protocol/openid-connect/token`,
     headers: {
@@ -81,13 +81,13 @@ const getMasterAdminToken = async () => {
 
 export const signUp = async (keycloakUser: IKeycloakUser) => {
   try {
-    const response: AxiosResponse | null = await getMasterAdminToken();
+    const masterToken: AxiosResponse | null = await getMasterAdminToken();
 
-    if (!response || !response.data || response.status !== 200) {
+    if (!masterToken || !masterToken.data || masterToken.status !== 200) {
       return new AppResult(
         AppErrorsMessages.ERROR_SIGNUP,
-        response?.data.errorMessage,
-        response?.status || 500
+        masterToken?.data.errorMessage,
+        masterToken?.status || 500
       );
     }
 
@@ -95,7 +95,7 @@ export const signUp = async (keycloakUser: IKeycloakUser) => {
       baseURL: `${keycloakConfig.user.authServerUrl}/admin/realms/${keycloakConfig.user.realm}/users`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + response.data["access_token"],
+        Authorization: "Bearer " + masterToken.data["access_token"],
       },
     });
 
@@ -118,5 +118,104 @@ export const signUp = async (keycloakUser: IKeycloakUser) => {
   } catch (e: any) {
     log("[signUp] EXCEPTION: ", e.message);
     return new AppResult(AppErrorsMessages.ERROR_SIGNUP, e.message, 500);
+  }
+};
+
+export const getUserId = async (email: string) => {
+  try {
+    const response: AxiosResponse | null = await getMasterAdminToken();
+
+    if (!response || !response.data || response.status !== 200) {
+      return new AppResult(
+        AppErrorsMessages.ERROR_SIGNUP,
+        response?.data.errorMessage,
+        response?.status || 500
+      );
+    }
+
+    const keycloakApi = axios.create({
+      baseURL: `${keycloakConfig.user.authServerUrl}/admin/realms/${keycloakConfig.user.realm}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + response.data["access_token"],
+      },
+    });
+
+    return await keycloakApi
+      .get(`/users?username=${email}`)
+      .then((response: AxiosResponse) => {
+        const data = response.data[0];
+
+        if (data) {
+          const userId = data.id;
+          return new AppResult(userId, null, 200);
+        }
+
+        return new AppResult(
+          AppErrorsMessages.FAIL_AUTH_AND_REGISTER,
+          null,
+          500
+        );
+      })
+      .catch((e: AxiosError) => {
+        log("[signUp] EXCEPTION keycloakApi.post: ", e);
+        return new AppResult(
+          AppErrorsMessages.ERROR_SIGNUP,
+          e.response?.data.errorMessage || null,
+          400
+        );
+      });
+  } catch (e: any) {
+    log("[signUp] EXCEPTION: ", e.message);
+    return new AppResult(AppErrorsMessages.ERROR_SIGNUP, e.message, 500);
+  }
+};
+
+export const deleteKeycloakUser = async (email: string) => {
+  try {
+    const masterToken: AxiosResponse | null = await getMasterAdminToken();
+
+    if (!masterToken || !masterToken.data || masterToken.status !== 200) {
+      log(
+        `[deleteKeycloakUser] EXCEPTION: ${masterToken?.data.errorMessage}: `
+      );
+      return false;
+    }
+
+    const userIdResult = await getUserId(email);
+
+    if (userIdResult.isError()) {
+      log(
+        `[deleteKeycloakUser] EXCEPTION: ${userIdResult.message}`,
+        `Details: ${userIdResult.errorDetails}`
+      );
+      return false;
+    }
+
+    const keycloakApi = axios.create({
+      baseURL: `${keycloakConfig.user.authServerUrl}/admin/realms/${keycloakConfig.user.realm}/users`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + masterToken.data["access_token"],
+      },
+    });
+
+    log("deleting user of ID " + userIdResult.message);
+
+    return await keycloakApi
+      .delete("/" + userIdResult.message)
+      .then(() => {
+        return true;
+      })
+      .catch((e: AxiosError) => {
+        log(
+          `[deleteKeycloakUser] EXCEPTION ${AppErrorsMessages.ERROR_DELETE_KEYCLOAK_USER}: `,
+          e
+        );
+        return false;
+      });
+  } catch (e: any) {
+    log("[deleteKeycloakUser] EXCEPTION: ", e.message);
+    return false;
   }
 };

@@ -34,6 +34,12 @@ export interface IAuthTokens {
   expiresIn: number;
 }
 
+export interface IUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 const authSchema = new Schema<IUserCredentials>(
   {
     email: { type: String, required: true },

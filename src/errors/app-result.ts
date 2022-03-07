@@ -1,7 +1,7 @@
 class AppResult {
-  public readonly message: string;
-  public readonly errorDetails: string | null;
-  public readonly statusCode: number;
+  public message: string;
+  public errorDetails: string | null;
+  public statusCode: number;
 
   constructor(
     message: string,

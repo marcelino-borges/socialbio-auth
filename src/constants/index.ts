@@ -7,6 +7,7 @@ export enum AppErrorsMessages {
   FAIL_AUTH_TOKEN = "Invalid token.",
   FAIL_GET_TOKEN = "Failed to get token.",
   ERROR_SIGNUP = "Error signing up.",
+  ERROR_DELETE_KEYCLOAK_USER = "Error deleting auth user.",
   ERROR_SAVE_USER = "Error saving user.",
   ERROR_UPDATE_USER = "Error updating user.",
   ERROR_DELETE_USER = "Error deleting user.",
@@ -22,6 +23,7 @@ export enum AppErrorsMessages {
   PASSWORDS_NOT_MATCH = "Passwords don't match.",
   PASSWORDS_REQUIRED = "Passwords required.",
   SIGNOUT = "Failed to sign out.",
+  FAIL_AUTH_AND_REGISTER = "Error registering the user after creating the auth account.",
 }
 
 export enum AppSuccessMessages {
