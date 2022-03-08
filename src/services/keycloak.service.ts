@@ -173,7 +173,6 @@ export const getUserId = async (email: string) => {
 
 export const deleteKeycloakUser = async (email: string) => {
   try {
-    log(`[deleteKeycloakUser] deleting user ${email}`);
     const masterToken: AxiosResponse | null = await getMasterAdminToken();
 
     if (!masterToken || !masterToken.data || masterToken.status !== 200) {
@@ -201,7 +200,7 @@ export const deleteKeycloakUser = async (email: string) => {
       },
     });
 
-    log("deleting user of ID " + userIdResult.message);
+    log("deleting user of ID " + userIdResult.message + " and email " + email);
 
     return await keycloakApi
       .delete("/" + userIdResult.message)

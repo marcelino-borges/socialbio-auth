@@ -6,7 +6,6 @@ import { AppErrorsMessages } from "../constants";
 import { createUser, doesUserExist } from "../services/register.service";
 import { log } from "../utils/utils";
 import { deleteKeycloakUser } from "../services/keycloak.service";
-import { getMasterAdminToken } from "./../services/keycloak.service";
 import { AxiosResponse } from "axios";
 
 export const signIn = async (req: Request, res: Response) => {
@@ -60,7 +59,7 @@ export const signOut = async (req: Request, res: Response) => {
     #swagger.description  = 'Signs the user out, ending his token'
     #swagger.parameters['refreshToken'] = {
       in: 'body',
-      description: 'User email',
+      description: 'User refreshToken',
       required: true,
       type: 'string'
     }
@@ -113,7 +112,16 @@ export const signUp = async (req: Request, res: Response) => {
     }
   */
 
-  const { email, password, confirmPassword, firstName, lastName } = req.body;
+  const {
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    profileImageUrl,
+    agreePrivacy,
+    receiveCommunications,
+  } = req.body;
 
   if (!email || email.length < 1) {
     return res
@@ -169,6 +177,9 @@ export const signUp = async (req: Request, res: Response) => {
       firstName,
       lastName,
       email,
+      profileImageUrl,
+      agreePrivacy,
+      receiveCommunications,
     };
 
     const tokenResponse: AxiosResponse | null = await userService.getToken(

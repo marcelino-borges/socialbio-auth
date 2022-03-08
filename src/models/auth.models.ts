@@ -38,6 +38,9 @@ export interface IUser {
   firstName: string;
   lastName: string;
   email: string;
+  profileImageUrl?: string;
+  agreePrivacy: boolean;
+  receiveCommunications: boolean;
 }
 
 const authSchema = new Schema<IUserCredentials>(
